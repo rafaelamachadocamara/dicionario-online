@@ -1,59 +1,87 @@
-# Dicionario
+📘 Dicionário Web com Angular
+Um aplicativo web responsivo e moderno desenvolvido com Angular que permite aos usuários pesquisar palavras e obter informações detalhadas, como definições, sinônimos, antônimos e outros dados linguísticos, por meio de uma API de dicionário.
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.13.
+✨ Funcionalidades
+🔍 Pesquisa de palavras em tempo real
 
-## Development server
+📚 Exibição de definições completas
 
-To start a local development server, run:
+🟢 Sinônimos e 🔴 antônimos listados de forma clara
 
-```bash
-ng serve
-```
+🧠 Informações adicionais sobre cada palavra (classe gramatical, fonética, etc.)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+📱 Interface responsiva e amigável para todos os dispositivos
 
-## Code scaffolding
+⚡ Rápido e leve, com carregamento eficiente
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+🛠️ Tecnologias Utilizadas
+Angular 19 – Framework principal
 
-```bash
-ng generate component component-name
-```
+TypeScript – Linguagem de desenvolvimento
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+RxJS – Programação reativa
 
-```bash
-ng generate --help
-```
+Express – Servidor para SSR (Server-side rendering)
 
-## Building
+Zone.js – Detecção de mudanças
 
-To build the project run:
+API de Dicionário – Fonte de dados (substitua pela API real utilizada)
 
-```bash
-ng build
-```
+🚀 Como Executar o Projeto
+1. Pré-requisitos
+Node.js v18 ou superior
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Angular CLI
 
-## Running unit tests
+2. Instalação
+Clone o repositório e instale as dependências:
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+bash
+Copiar
+Editar
+git clone https://github.com/seu-usuario/dicionario.git
+cd dicionario
+npm install
+3. Rodando o projeto localmente
+bash
+Copiar
+Editar
+npm start
+Acesse: http://localhost:4200
 
-```bash
-ng test
-```
+🌐 SSR (Server-Side Rendering)
+Para rodar a versão com renderização no servidor:
 
-## Running end-to-end tests
+bash
+Copiar
+Editar
+npm run build
+npm run serve:ssr:dicionario
+🧪 Testes
+Execute os testes unitários com:
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+bash
+Copiar
+Editar
+npm test
+📁 Estrutura do Projeto
+pgsql
+Copiar
+Editar
+dicionario/
+├── src/
+│   ├── app/
+│   │   ├── components/
+│   │   ├── services/
+│   │   └── pages/
+│   ├── assets/
+│   └── index.html
+├── angular.json
+├── package.json
+└── tsconfig.json
+📦 Scripts Disponíveis
+Comando	Descrição
+npm start	Inicia o servidor de desenvolvimento
+npm run build	Compila o projeto para produção
+npm run test	Executa os testes unitários
+npm run serve:ssr:dicionario	Inicia o servidor com SSR
