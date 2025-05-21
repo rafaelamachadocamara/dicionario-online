@@ -1,1 +1,145 @@
-<p>dicionario-list works!</p>
+<div class="container">
+    <div class="header">
+        <h1>📚 Dicionário</h1>
+        <p>Descubra o significado das palavras</p>
+    </div>
+
+    <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-input" placeholder="Digite uma palavra para pesquisar..."
+            [formControl]="searchControl" #searchInput (keyup.enter)="onSearchSubmit()">
+    </div>
+
+    <div class="buttons-container">
+        <button class="search-btn" (click)="onSearchSubmit()" [disabled]="isLoading">
+            <span>🔍</span>
+            Pesquisar
+        </button>
+        <button class="clear-btn" (click)="clearSearch()">
+            <span>✖️</span>
+            Limpar
+        </button>
+    </div>
+
+    <!-- Loading principal -->
+    <div class="loading" *ngIf="isLoading && !showResults">
+        <div class="spinner"></div>
+        <p>Pesquisando...</p>
+    </div>
+
+    <!-- Mensagem de erro -->
+    <div class="error" *ngIf="hasError">
+        <div class="error-icon">❌</div>
+        <h3>Palavra não encontrada</h3>
+        <p>{{ errorMessage }}</p>
+    </div>
+
+    <!-- Lista de resultados da busca (lado esquerdo) -->
+    <div class="search-results" *ngIf="showResults && words.length > 0">
+        <h3>Resultados da busca ({{ allResults.length }} palavras encontradas)</h3>
+        <div class="words-list">
+            <div *ngFor="let word of words" class="word-item" [class.active]="word.word === currentWord"
+                (click)="selectWord(word)">
+                <h4>{{ word.word }}</h4>
+                <p class="preview">{{ word.preview }}</p>
+            </div>
+
+            <!-- Loading infinito -->
+            <div class="loading-more" *ngIf="isLoadingMore">
+                <div class="spinner-small"></div>
+                <p>Carregando mais palavras...</p>
+            </div>
+
+            <!-- Indicador de fim dos resultados -->
+            <div class="end-results" *ngIf="!hasMoreData && words.length > 0">
+                <p>Fim dos resultados</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detalhes da palavra (lado direito ou principal) -->
+    <div class="results-container" *ngIf="hasCurrentWord">
+        <div class="word-header">
+            <div>
+                <h2 class="word-title">{{ currentWord }}</h2>
+                <p class="grammatical-class" *ngIf="currentGrammaticalClass">{{ currentGrammaticalClass }}</p>
+            </div>
+        </div>
+
+        <!-- Definições -->
+        <div class="definition-section" *ngIf="currentDefinitions.length > 0">
+            <h3 class="section-title">
+                <span class="section-icon">📖</span>
+                Definições
+            </h3>
+            <div id="definitions">
+                <div class="definition-item" *ngFor="let definition of currentDefinitions; index as i">
+                    <p class="definition-text">{{ definition }}</p>
+                    <div class="example" *ngIf="currentExamples[i]">"{{ currentExamples[i] }}"</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exemplos adicionais -->
+        <div class="definition-section" *ngIf="currentExamples.length > currentDefinitions.length">
+            <h3 class="section-title">
+                <span class="section-icon">💭</span>
+                Exemplos
+            </h3>
+            <div class="examples-container">
+                <div class="example" *ngFor="let example of currentExamples.slice(currentDefinitions.length)">
+                    "{{ example }}"
+                </div>
+            </div>
+        </div>
+
+        <!-- Informações adicionais da palavra -->
+        <div class="definition-section" *ngIf="currentWordDetails.length > 0">
+            <h3 class="section-title">
+                <span class="section-icon">ℹ️</span>
+                Informações
+            </h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <strong>Aceções encontradas:</strong> {{ currentWordDetails.length }}
+                </div>
+                <div class="info-item" *ngIf="currentWordDetails[0]?.creator">
+                    <strong>Criado por:</strong> {{ currentWordDetails[0].creator }}
+                </div>
+                <div class="info-item" *ngIf="currentWordDetails[0]?.timestamp">
+                    <strong>Data:</strong> {{ currentWordDetails[0].timestamp | date:'dd/MM/yyyy' }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estado inicial - Palavra do dia -->
+    <div class="word-of-day" *ngIf="!showResults && !hasError && !isLoading && hasCurrentWord">
+        <h3>✨ Palavra em destaque</h3>
+        <div class="word-header">
+            <div>
+                <h2 class="word-title">{{ currentWord }}</h2>
+                <p class="grammatical-class" *ngIf="currentGrammaticalClass">{{ currentGrammaticalClass }}</p>
+            </div>
+        </div>
+
+        <div class="definition-section" *ngIf="currentDefinitions.length > 0">
+            <h4 class="section-title">
+                <span class="section-icon">📖</span>
+                Definições
+            </h4>
+            <div>
+                <div class="definition-item" *ngFor="let definition of currentDefinitions.slice(0, 2)">
+                    <p class="definition-text">{{ definition }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estado vazio -->
+    <div class="empty-state" *ngIf="!showResults && !hasError && !isLoading && !hasCurrentWord">
+        <div class="empty-icon">📖</div>
+        <h3>Bem-vindo ao Dicionário Digital</h3>
+        <p>Digite uma palavra na barra de pesquisa para começar a explorar significados e definições.</p>
+    </div>
+</div>
