@@ -1,4 +1,3 @@
-/* Estilos base */
 * {
     margin: 0;
     padding: 0;
@@ -18,17 +17,19 @@ body {
     padding: 0 20px;
 }
 
-/* Header */
 .header {
     text-align: center;
     margin-bottom: 30px;
-    color: white;
+    color: black;
+
 }
 
 .header h1 {
     font-size: 3rem;
     margin-bottom: 10px;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: black;
+
 }
 
 .header p {
@@ -36,7 +37,6 @@ body {
     opacity: 0.9;
 }
 
-/* Barra de pesquisa */
 .search-container {
     position: relative;
     max-width: 600px;
@@ -50,6 +50,7 @@ body {
     transform: translateY(-50%);
     font-size: 1.2rem;
     color: #666;
+    z-index: 2;
 }
 
 .search-input {
@@ -70,7 +71,6 @@ body {
     background: white;
 }
 
-/* Botões */
 .buttons-container {
     display: flex;
     justify-content: center;
@@ -106,6 +106,7 @@ body {
 .search-btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+    transform: none;
 }
 
 .clear-btn {
@@ -119,7 +120,6 @@ body {
     box-shadow: 0 6px 20px rgba(244, 67, 54, 0.4);
 }
 
-/* Loading */
 .loading {
     text-align: center;
     padding: 40px 20px;
@@ -167,7 +167,6 @@ body {
     }
 }
 
-/* Error */
 .error {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 20px;
@@ -176,6 +175,7 @@ body {
     max-width: 500px;
     margin: 0 auto;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
 }
 
 .error-icon {
@@ -194,24 +194,17 @@ body {
     font-size: 1.1rem;
 }
 
-/* Layout principal com split */
-@media (min-width: 768px) {
-    .container {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
-
-    .search-results.show-split+.results-container {
-        grid-column: 2;
-    }
-
-    .search-results.show-split {
-        grid-column: 1;
-    }
+.main-content {
+    display: block;
 }
 
-/* Lista de resultados */
+.main-content.split-layout {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
 .search-results {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 20px;
@@ -230,6 +223,20 @@ body {
 .words-list {
     max-height: 600px;
     overflow-y: auto;
+}
+
+.words-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.words-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.words-list::-webkit-scrollbar-thumb {
+    background: #667eea;
+    border-radius: 10px;
 }
 
 .word-item {
@@ -261,9 +268,19 @@ body {
     color: #666;
     font-size: 0.9rem;
     line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
-/* Container de resultados */
+.end-results {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+    font-style: italic;
+}
+
 .results-container,
 .word-of-day {
     background: rgba(255, 255, 255, 0.95);
@@ -299,7 +316,6 @@ body {
     display: inline-block;
 }
 
-/* Seções de definição */
 .definition-section {
     margin-bottom: 30px;
 }
@@ -324,6 +340,12 @@ body {
     border-radius: 15px;
     margin-bottom: 15px;
     border-left: 4px solid #667eea;
+    transition: all 0.3s ease;
+}
+
+.definition-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .definition-text {
@@ -348,7 +370,6 @@ body {
     gap: 10px;
 }
 
-/* Grid de informações */
 .info-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -360,15 +381,119 @@ body {
     padding: 15px;
     border-radius: 10px;
     font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.info-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .info-item strong {
     color: #667eea;
 }
 
-/* Estado vazio */
 .empty-state {
     text-align: center;
-    color: white;
-    padding: 60
+    color: black;
+    padding: 60px 20px;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+.empty-state h3 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.empty-state p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+@media (max-width: 1024px) {
+    .main-content.split-layout {
+        display: block;
+    }
+
+    .search-results {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2.2rem;
+    }
+
+    .header p {
+        font-size: 1rem;
+    }
+
+    .search-input {
+        padding: 15px 15px 15px 50px;
+        font-size: 1rem;
+    }
+
+    .search-icon {
+        left: 15px;
+        font-size: 1rem;
+    }
+
+    .buttons-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .search-btn,
+    .clear-btn {
+        width: 200px;
+        justify-content: center;
+    }
+
+    .word-title {
+        font-size: 2rem;
+    }
+
+    .results-container,
+    .word-of-day {
+        padding: 20px;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.container>* {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.search-input:focus,
+.search-btn:focus,
+.clear-btn:focus,
+.word-item:focus {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
 }

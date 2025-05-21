@@ -17,34 +17,29 @@ export class DicionarioListComponent implements OnInit, OnDestroy {
 
   searchControl = new FormControl('');
 
-  // Estados da aplicação
   words: PrefixResult[] = [];
   currentWord: string = '';
   currentWordDetails: WordEntry[] = [];
-  allResults: PrefixResult[] = []; // Armazena todos os resultados da busca atual
+  allResults: PrefixResult[] = [];
 
-  // Estados visuais
   loading$ = new BehaviorSubject<boolean>(false);
   loadingMore$ = new BehaviorSubject<boolean>(false);
   error$ = new BehaviorSubject<string | null>(null);
   showResults$ = new BehaviorSubject<boolean>(false);
 
-  // Controle de paginação e scroll infinito
   currentPage = 0;
   pageSize = 15;
   hasMoreData = true;
 
-  // Para gerenciar subscriptions
   private destroy$ = new Subject<void>();
 
-  // Controle de scroll
   private scrollThreshold = 200;
 
   constructor(private dicionarioService: DicionarioService) { }
 
   ngOnInit(): void {
     this.setupSearch();
-    this.loadWordOfTheDay(); // Carrega palavra do dia inicialmente
+    this.loadWordOfTheDay();
   }
 
   ngOnDestroy(): void {
@@ -91,7 +86,6 @@ export class DicionarioListComponent implements OnInit, OnDestroy {
           this.hasMoreData = results.length > this.pageSize;
           this.showResults$.next(true);
 
-          // Carrega detalhes da primeira palavra automaticamente
           if (this.words.length > 0) {
             this.loadWordDetail(this.words[0]);
           }
@@ -104,13 +98,11 @@ export class DicionarioListComponent implements OnInit, OnDestroy {
   }
 
   private searchWords(searchTerm: string): Observable<PrefixResult[]> {
-    // Busca por prefixo primeiro, depois por infix se necessário
     return this.dicionarioService.getWordsByPrefix(searchTerm).pipe(
       switchMap(prefixResults => {
         if (prefixResults.length > 0) {
           return of(prefixResults);
         }
-        // Se não encontrou por prefixo, tenta por infix
         return this.dicionarioService.getWordsByInfix(searchTerm);
       })
     );
@@ -121,7 +113,7 @@ export class DicionarioListComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe({
       next: (wordOfDay) => {
-        // Extrai a palavra do XML
+
         const word = this.extractWordFromXML(wordOfDay.xml);
         if (word) {
           this.currentWord = word;
@@ -130,7 +122,6 @@ export class DicionarioListComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Erro ao carregar palavra do dia:', error);
-        // Carrega uma palavra aleatória como fallback
         this.loadRandomWord();
       }
     });
@@ -151,7 +142,6 @@ export class DicionarioListComponent implements OnInit, OnDestroy {
   }
 
   private loadWordDetailsById(wordId: string): void {
-    // Como a API não tem endpoint direto por ID, vamos usar o word endpoint
     this.dicionarioService.getWord(this.currentWord).pipe(
       takeUntil(this.destroy$)
     ).subscribe({
@@ -219,7 +209,6 @@ export class DicionarioListComponent implements OnInit, OnDestroy {
     const endIndex = startIndex + this.pageSize;
     const newWords = this.allResults.slice(startIndex, endIndex);
 
-    // Simula um delay mínimo para mostrar o loading
     setTimeout(() => {
       if (newWords.length > 0) {
         this.words = [...this.words, ...newWords];
@@ -231,7 +220,6 @@ export class DicionarioListComponent implements OnInit, OnDestroy {
     }, 500);
   }
 
-  // Métodos para extrair informações do XML
   extractDefinition(xmlString: string): string {
     if (!xmlString) return 'Definição não disponível';
 
@@ -284,7 +272,6 @@ export class DicionarioListComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Métodos para interação com a UI
   onSearchSubmit(): void {
     const searchTerm = this.searchControl.value;
     if (searchTerm && searchTerm.trim().length >= 2) {
@@ -292,19 +279,11 @@ export class DicionarioListComponent implements OnInit, OnDestroy {
     }
   }
 
-  clearSearch(): void {
-    this.searchControl.setValue('');
-    this.showResults$.next(false);
-    this.error$.next(null);
-    this.loadWordOfTheDay();
-  }
 
-  // Método para navegação entre palavras da lista
   selectWord(wordResult: PrefixResult): void {
     this.loadWordDetail(wordResult);
   }
 
-  // Getters para facilitar o uso no template
   get isLoading(): boolean {
     return this.loading$.value;
   }
