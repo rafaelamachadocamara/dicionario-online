@@ -1,1 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+    background: linear-gradient(135deg, #0f2027, #2c7744) !important;
+}
+
+
+.container {
+    background: transparent;
+    backdrop-filter: blur(10px);
+}
+

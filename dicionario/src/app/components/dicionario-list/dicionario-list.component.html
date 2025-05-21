@@ -36,7 +36,7 @@
                 <div *ngFor="let word of words" class="word-item" [class.active]="word.word === currentWord"
                     (click)="selectWord(word)">
                     <h4>{{ word.word }}</h4>
-                    <p class="preview">{{ word.preview }}</p>
+                    <p class="preview" [innerHTML]="word.preview"></p>
                 </div>
 
                 <div class="loading-more" *ngIf="isLoadingMore">
